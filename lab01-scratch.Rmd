@@ -141,18 +141,57 @@ no_outliers_trails <- current_trails %>%
 
 8. Consider the distribution of `class`. 
     - What are the values of `class` in the dataset? Show the code and output to support your answer. 
-    - What do you think is the most likely reason for the missing observations of `class`? In other words, what does a missing value of `class` indicate? 
+    - What do you think is the most likely reason for the missing observations of `class`? In other words, what does a missing value of `class` indicate?
+  
+```{r eval=T}
+ggplot(data = no_outliers_trails, aes(x = class)) + 
+  geom_bar() + 
+  labs(x = "Class", 
+       y = "Counts", 
+       title = "Count of Class Type, Bay Area Trails")
+```  
+Based on the graph and output from the console, I believe that there are four distinct class variables in the no_outliers_trails dataset, 1, 2, 3 like displayed in the bar graph along with an NA class value since the output said 1 row containing non-finite value was removed.
+
+The missing observations of class was likely due to NA being a non-fintie value so it was omitted when creating the bar graph. The missing value, NA indicates that some trails do not have a value for 'class' meaning they were not assigned to the trail yet and it is currently undetermined for the class it should belong to. 
 
 9. Complete the code below to impute (i.e. fill in) the missing values of `class` with the appropriate value. After that, eliminate all the observations from class = 3, since we are not going to use the. Then, display the distribution of `class` to check that the missing values were correctly imputed.
 
-```{r eval=FALSE}
-__________ <- __________ %>% filter(class !=3) %>% 
-  mutate(class = if_else(is.na(class),______,class)) 
+```{r eval=T}
+no_class_3_trails <- no_outliers_trails %>% filter(class !=3) %>% 
+  mutate(class = if_else(is.na(class),0,class))
+
+ggplot(data = no_class_3_trails, aes(x = class)) + 
+  geom_bar() + 
+  labs(x = "Class", 
+       y = "Counts", 
+       title = "Count of Class Type, Bay Area Trails")
 ```
 
 10. Now that we've completed the univariate EDA (i.e. examining one variable at a time), let's examine the relationship between the length of the trail and its class variable. Make a graph to visualize the relationship between `length` and `class` and calculate the appropriate summary statistics. Include informative axis labels and title on your graph.
 
+```{r eval = T}
+ggplot(data = no_outliers_trails, mapping = aes(x = as.factor(class), y = length)) +
+  geom_boxplot() +
+  labs(x = "Class", 
+       y = "Length", 
+       title = "Bay Area Trail Length Boxplots per Class")
+
+no_outliers_trails %>%
+  group_by(class) %>%
+  summarise(min = min(length), 
+            q1 = quantile(length, probs = c(0.25)), 
+            median = median(length), 
+            q3 = quantile(length, probs = c(0.75)), 
+            max = max(length), 
+            iqr = IQR(length), 
+            mean = mean(length), 
+            std_dev = sd(length)
+            )
+```
+
 11. Describe the relationship between `length` and `class`. In other words, describe how the distribution of `length` compares between trails that have different classes (1 = shared use bicycle and pedestrian path, 2 = bike lane, and 3 = bike route). Include information from the graph and summary statistics from the previous exercise in your response.
+
+Originally, I used the no_class_3_trails dataset since I thought we always used the new filtered dataset. I used the no_outliers_trails after looking at Exercise 11 which wants to compare the different classes (1 = shared use bicycle and pedestrian path, 2 = bike lane, and 3 = bike route). I created box plots for the length distribution for each class variable. The class variable 1 representing the shared used bicycle and pedestrain path had the same median as class variable 3 but, a lower median than class variable 2. Class variable 1 had the largest range for 'length' where it had seem to the most right skewed since it had the most outliers for largest trail lengths. Class variable 2 which represents the bike lane has the highest median in comparison to class variable 1 and 3 which still had a wide spread but, had much fewer outliers than class variable 1. Class variable 3 which represents the bike route had the median similar to class variable 1 but, had a much smaller spread where the lengths had a much smaller spread.  The summary statistics provide more evidence where class 3 (0.283) had the smallest standard deviation or spread followed by class 2 (0.570) then class 1 (0.740) and the difference between the mean and the median follwing the same pattern: class 3 (about 0.000) having the smallest difference followed by class 2 (0.185) and class 1 (0.274) to depict the number of possible outliers each 'length' distribution has for each class variable.
 
 *This is a good place to knit, commit, and push changes to your remote lab-01 repo on GitHub. Be sure to write informative commit message (e.g. "Completed exercises 8 - 11"), and push every file to GitHub by clicking the checkbox next to each file in the Git pane. After you push the changes, the Git pane in RStudio should be empty."*
 
