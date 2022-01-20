@@ -96,11 +96,14 @@ current_trails <- trails %>%
 
    Make a graph to visualize the distribution of `length`. Include an informative title and axis labels.
 
-```{r eval = F}
+```{r eval = T}
 ggplot(data = current_trails) +
-  geom_histogram(mapping = aes(x = _____), binwidth = 0.5)
+  geom_histogram(mapping = aes(x = length), binwidth = 0.5) +
+  labs(x = "Length", 
+       y = "Counts", 
+       title = "Count of Bay Area Trails Length")
 
-ggplot(data = current_trails, mapping = aes(x = as.factor(class), y = _____)) +
+ggplot(data = current_trails, mapping = aes(x = as.factor(class), y = length)) +
   geom_boxplot()
 ```
 
@@ -108,24 +111,31 @@ See [Section 7.3.1 "Visualizing Distributions"](https://r4ds.had.co.nz/explorato
 
 5. Next, fill in the code below to use the `summarise` function to calculate various summary statistics for the variable `length`. You can use the [summarise reference page](https://dplyr.tidyverse.org/reference/summarise.html) for more information about the function and example code. 
 
-```{r eval = FALSE}
+```{r eval = T}
 current_trails %>%
-  summarise(min = __________, 
-            q1 = __________, 
-            median = __________, 
-            q3 = __________, 
-            max = __________, 
-            iqr = __________, 
-            mean = __________, 
-            std_dev = __________
+  summarise(min = min(length), 
+            q1 = quantile(length, probs = c(0.25)), 
+            median = median(length), 
+            q3 = quantile(length, probs = c(0.75)), 
+            max = max(length), 
+            iqr = IQR(length), 
+            mean = mean(length), 
+            std_dev = sd(length)
             )
 ```
 
 6. Describe the distribution of `length`. Your description should include comments about the shape, center, spread, and any potential outliers. Use the graph from Exercise 4 and relevant summary statistics from Exercise 5 in your description.
 
+Based on histogram created in Exercise 4, the variable 'length' in the current_trails dataset is right skewed, uni-modal where there are outliers in the distribution on the right where few trails are really long. There seems to be peak at around 1 which means that a good chunk of Bay Area trails have a 'length' of about 1 where they are concentrated from in the histogram. The spread of trail lengths may vary since most trails have short lengths of about 1 but, there are few trails that have longer lengths that play a factor in increasing the spread of 'length'. The relevant summary statistics from Exercise 5 give further evidence of the findings in Exercise 4. The graph seems to skew to the right since the mean of 'length' is 0.724 while the median is much smaller, 0.448, meaning that some larger outliers are increasing the mean of the distribution. The center of the distribution is usually described as the median since it is not affected by outliers while the mean is. The spread of the distribution can be described as a concentration of small trail lengths and a more wider spread of trail lengths as 'length' increases shown through the five number summary of min, q1, median, q3, and max. The standard deviation of the 'length' distribution is 0.852. The outliers shown in the Exercise 4 histogram can be seen with trails with length > 5 since there are not any trails in neighboring bins for 'length'. 
+
 7. We want to limit the analysis to trails that are more likely intended for day hikes, rather than multi-day hikes and camping. Therefore, let's remove the extreme outliers from the data for this analysis and only consider those trails that are 5 miles or shorter. 
 
-    Filter the dataset to remove the extreme outliers. **Be sure to save the updated dataset, so you can use it for the remainder of the lab.** 
+    Filter the dataset to remove the extreme outliers. **Be sure to save the updated dataset, so you can use it for the remainder of the lab.**
+
+```{r eval = T}
+no_outliers_trails <- current_trails %>%
+  filter(length < 5.0)
+```
     
 *This is a good place to knit, commit, and push changes to your remote lab-01 repo on GitHub. Be sure to write informative commit message (e.g. "Completed exercises 4 - 7"), and push every file to GitHub by clicking the checkbox next to each file in the Git pane. After you push the changes, the Git pane in RStudio should be empty."*
 
