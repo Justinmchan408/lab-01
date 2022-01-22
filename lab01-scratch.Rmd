@@ -204,8 +204,11 @@ Over the next few questions, will use statistical inference to assess whether th
 
 12. The following conditions must be met when we conduct statistical inference on the difference in means between two groups. For each condition, specify whether it is met and a brief explanation of your reasoning. 
     - **Independence**
+    The sampling in the study would be independent because the trails chosen in the study should be          randomly selected since there does not seem to be any other reason to choose a trail other than          randomly selecting a trail. Also, since trails are being selected without replacement, it seems safe     to say that there is more than 739 trails is more than 10 times less than the total trails in the Bay     Area.
     - **Sample Size**
+    The sample size for both bicycle and pedestrian path, class variable 1 and bike line, class variable     2 are greater than 30 as shown by the bar graph in Exercise 9 making the sample size for each            category large enough.
     - **Independent Groups**
+    The two groups, bicycle/pedestrian paths and bike lines are independent from one another which simply     means that they are not associated with each other. From the information given about the study, there     is not a correlation between these two group so we can assume the groups are independent.
 
 13. While we have observed a small difference in the mean length in trails with bike lanes (class = 2) and trials that share bikes with pedestrians (class = 1), let's assess if there is enough evidence to consider the difference "statistically significant" or if it appears to be due to random chance. 
 
@@ -214,21 +217,31 @@ The null and alternative hypotheses are written in statistical notation below. S
 $$H_0: \mu_1 - \mu_2 = 0 \\
 H_a: \mu_1 - \mu_2 \neq 0$$
 
+In words, the null hypothesis is saying the difference between mean length of trails that are for bikes/pedestrians and the mean length of trails that have bike lanes are 0. In other words, the average length of trails between both different types of trails are about the same.
+
+The alternative hypothesis is saying that there is difference between the mean length of trails that are for bikes/pedestrians and the mean length of trails that have bike lanes which is not 0. In other words, the average length of trails between both different types of trails are different from one another.
+
 14. Fill in the code below to use the `t.test` function to calculate the test statistic and p-value. Replace `response` with the variable we're interested in drawing conclusions about and `group_var` with the variable used to define the two groups.
 
-```{r eval = FALSE}
+```{r eval = T}
 ?t.test # to see the help page from the function
-t.test(response ~ group_var, data = ________, 
-       alternative = "___________", 
+t.test(length ~ class, data = no_class_3_trails, 
+       alternative = "two.sided", 
        conf.level = 0.99) #less, greater, or two.sided
 ```
 
 15. Use the output from the previous exercise to answer the following: 
     - Write the definition of the test statistic in the context of this analysis.
-    - Write the definition of the p-value in the context of this analysis. 
-    - State your conclusion in the context of this analysis. Use a significance level of $\alpha = 0.01$. 
+    The test statistic in this case is the t-score of -0.699986 which is how far from the           estimated mean difference of two means or the estimated difference of means between trail       lengths of bicycle/pedestrian and bike lanes in terms of the sample distribution standard       deviation. In this context, it is saying were about 0.700 sample distribution standard          deviations below the expected value 0 for difference of trail length between the two            classes.
+    - Write the definition of the p-value in the context of this analysis.
+    The p-value is the probability of observing the dataset which represents a sample given that     the null hypothesis is true. In this case, our null hypothesis stated that there should not     be a mean or average difference of lengths between trails for bicycles/pedestrians versus       bike lanes. The p-value, 0.4852, means that there is a 48.52% chance that we observe this       data if we assumed that there is no difference in the average length of both types of trails     is true.
+    - State your conclusion in the context of this analysis. Use a significance level of $\alpha = 0.01$.
+    It can be concluded that we fail to reject to the null hypothesis which states that the         average trail length for bicycles/pedestrians is the same as the average trail length for       bike lanes. Since the p-value is 0.4852 which is much greater than 0.05 with a two.sided        t-test, we can say with 99% statistical confidence that we can not reject the null              hypothesis.
 
-16. Notice the confidence interval for the difference in mean trail length printed in the output from Exercise 14. Interpret this confidence interval in the context of this analysis. 
+
+16. Notice the confidence interval for the difference in mean trail length printed in the output from Exercise 14. Interpret this confidence interval in the context of this analysis.
+
+One way of interpreting the confidence interval is saying that with 99% confidence, the difference of average trail lengths from class 1, the bicycle/pedestrain trails from class 2, the bike lane trails lies between -0.243 and 0.141. However, we understand this as if we were able to take repeated random samples of the population, 99% of the confidence interval calculated from samples will contain the real population mean difference in average trail lengths. Since 0 is in the confidence interval, we can not determine that there is a significant difference between the mean trail lengths shown above.
 
 *You're done and ready to submit your work! Knit, commit, and push all remaining changes. You can use the commit message "Done with Lab 1!", and make sure you have pushed all the files to GitHub (your Git pane in RStudio should be empty) and that<u>all</u> documents are updated in your repo on GitHub. Then submit the pdf for your assignment on Gradescope. Include your repo name, so I can check your commits.*
 
